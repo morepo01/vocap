@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TOEIC Vocab Trainer 2568</title>
+  <style>
+    :root{
+      --bg:#0f172a;           /* slate-900 */
+      --panel:#111827;        /* gray-900 */
+      --soft:#1f2937;         /* gray-800 */
+      --muted:#9ca3af;        /* gray-400 */
+      --text:#e5e7eb;         /* gray-200 */
+      --brand:#22c55e;        /* green-500 */
+      --brand-2:#06b6d4;      /* cyan-500 */
+      --warn:#f59e0b;         /* amber-500 */
+      --danger:#ef4444;       /* red-500 */
+      --ok:#10b981;           /* emerald-500 */
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#0b1026);color:var(--text);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+    a{color:var(--brand)}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    header{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .title{display:flex;gap:14px;align-items:center}
+    h1{margin:0;font-size:clamp(20px,3.2vw,32px);letter-spacing:.3px}
+    .badge{background:linear-gradient(90deg,var(--brand),var(--brand-2));padding:4px 10px;border-radius:999px;font-weight:700;color:#052e18}
+    .panel{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));border:1px solid #1f2a44;border-radius:14px;box-shadow:0 10px 25px rgba(0,0,0,.35)}
+    .nav{display:flex;flex-wrap:wrap;gap:8px}
+    .tab{border:1px solid #22314e;background:#0e1731;color:var(--text);padding:10px 14px;border-radius:10px;cursor:pointer}
+    .tab[aria-selected="true"], .btn.primary{background:linear-gradient(90deg,#1a2a52,#0e1731);border-color:#34508b}
+    .grid{display:grid;gap:16px}
+    @media (min-width:960px){
+      .grid-2{grid-template-columns:1.2fr .8fr}
+    }
+    .controls{display:flex;flex-wrap:wrap;gap:10px}
+    label{font-size:13px;color:var(--muted)}
+    select, input[type="text"], textarea, input[type="number"]{
+      background:#0b1225;color:var(--text);border:1px solid #22314e;border-radius:10px;padding:10px 12px;min-width:160px
+    }
+    textarea{min-height:80px;width:100%}
+    .btn{display:inline-flex;align-items:center;gap:8px;border:1px solid #22314e;background:#0e1731;color:var(--text);padding:10px 14px;border-radius:10px;cursor:pointer}
+    .btn:disabled{opacity:.6;cursor:not-allowed}
+    .btn.ok{border-color:rgba(16,185,129,.3)}
+    .btn.warn{border-color:rgba(245,158,11,.3)}
+    .btn.danger{border-color:rgba(239,68,68,.3)}
+    .btn.outline{background:transparent}
+    .muted{color:var(--muted)}
+    .section{padding:16px}
+    .hidden{display:none}
+    .card{background:radial-gradient(1200px 300px at 10% 10%,rgba(20,255,190,.06),transparent),linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid #213056;border-radius:16px;padding:22px}
+    .flash{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:260px;text-align:center;cursor:pointer}
+    .word{font-size:40px;font-weight:800;letter-spacing:.2px}
+    .meaning{font-size:20px}
+    .kicker{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px}
+    .tag{display:inline-block;background:#0b1225;border:1px solid #22314e;padding:2px 8px;border-radius:999px;color:var(--muted);font-size:12px;margin-right:6px}
+    .flex{display:flex;gap:10px;align-items:center}
+    .justify-between{justify-content:space-between}
+    .mt-8{margin-top:16px}
+    .mt-16{margin-top:24px}
+    .table{width:100%;border-collapse:separate;border-spacing:0 10px}
+    .table th{font-size:12px;color:var(--muted);text-align:left;padding:0 10px}
+    .table td{background:#0b1225;border:1px solid #22314e;padding:10px;border-left:none;border-right:none}
+    .pill{display:inline-flex;align-items:center;gap:6px;background:rgba(34,197,94,.14);border:1px solid rgba(34,197,94,.35);color:#bdfad1;padding:2px 10px;border-radius:999px;font-size:12px}
+    .score{font-size:28px;font-weight:800}
+    .progress{height:8px;background:#0b1225;border:1px solid #22314e;border-radius:999px;overflow:hidden}
+    .progress>span{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--brand-2))}
+    .hint{font-size:12px;color:#86efac}
+    .danger-text{color:#fecaca}
+    .wrap-narrow{max-width:860px;margin-inline:auto}
+    .small{font-size:12px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 3l3.09 6.26L22 10.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 15.14l-5-4.87 6.91-1.01L12 3z" stroke="#22c55e"/></svg>
+        <h1>TOEIC Vocab Trainer <span class="badge">พ.ศ. 2568</span></h1>
+      </div>
+      <nav class="nav" role="tablist" aria-label="โหมดการใช้งาน">
+        <button class="tab" data-tab="flash" aria-selected="true">📇 ทบทวน (Flashcards)</button>
+        <button class="tab" data-tab="quiz">📝 แบบทดสอบ</button>
+        <button class="tab" data-tab="add">➕ เพิ่มคำศัพท์</button>
+        <button class="tab" data-tab="list">📚 รายการคำศัพท์</button>
+        <button class="tab" data-tab="io">⬆️⬇️ นำเข้า/ส่งออก</button>
+      </nav>
+    </header>
+
+    <!-- Flashcards -->
+    <section id="flash" class="section" role="tabpanel">
+      <div class="grid grid-2 wrap-narrow">
+        <div class="panel card" id="flashCard" tabindex="0" aria-live="polite" aria-label="การ์ดคำศัพท์ คลิกเพื่อพลิก">
+          <div class="kicker">คลิกการ์ดเพื่อพลิก / กด Space เพื่อเฉลย</div>
+          <div class="flash" id="flashInner"></div>
+          <div class="flex justify-between mt-16">
+            <div class="progress" style="flex:1"><span id="flashProgress" style="width:0%"></span></div>
+            <div class="pill" title="จำนวนคำที่ทำถูก"><span id="flashDone">0</span>&nbsp;✔️</div>
+          </div>
+        </div>
+        <div class="panel card">
+          <div class="controls">
+            <label>
+              กลุ่มคำศัพท์
+              <select id="flashCategory"></select>
+            </label>
+            <label>
+              ชนิดคำ (POS)
+              <select id="flashPOS"></select>
+            </label>
+            <label>
+              โหมด
+              <select id="flashMode">
+                <option value="front">ด้านหน้า: คำอังกฤษ → ความหมาย</option>
+                <option value="back">ด้านหน้า: ความหมายไทย → คำอังกฤษ</option>
+              </select>
+            </label>
+          </div>
+          <div class="mt-8 controls">
+            <button class="btn ok" id="btnKnow">จำได้ ✔️</button>
+            <button class="btn warn" id="btnUnsure">ยังไม่ชัวร์ 🤔</button>
+            <button class="btn outline" id="btnPrev">◀️ ก่อนหน้า</button>
+            <button class="btn outline" id="btnNext">ถัดไป ▶️</button>
+            <button class="btn" id="btnShuffle">🔀 สุ่มลำดับ</button>
+            <button class="btn" id="btnWrongOnly" title="ฝึกเฉพาะที่ตอบผิดบ่อย">🎯 ฝึกเฉพาะโจทย์ยาก</button>
+          </div>
+          <p class="small mt-8">ทิป: ใช้คีย์บอร์ด ← → เพื่อเลื่อน, Space เพื่อเฉลย, 1=จำได้, 2=ยังไม่ชัวร์</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quiz -->
+    <section id="quiz" class="section hidden" role="tabpanel">
+      <div class="panel card">
+        <div class="grid grid-2">
+          <div>
+            <h2 style="margin:0 0 8px">ตั้งค่าแบบทดสอบ</h2>
+            <div class="controls">
+              <label>โหมด
+                <select id="quizMode">
+                  <option value="mc">เลือกตอบ (อังกฤษ→ความหมาย)</option>
+                  <option value="typing">พิมพ์ตอบ (ความหมาย→อังกฤษ)</option>
+                </select>
+              </label>
+              <label>จำนวนข้อ
+                <input type="number" id="quizCount" min="3" max="100" value="10" />
+              </label>
+              <label>กลุ่มคำศัพท์
+                <select id="quizCategory"></select>
+              </label>
+              <label>ชนิดคำ (POS)
+                <select id="quizPOS"></select>
+              </label>
+            </div>
+            <div class="mt-8">
+              <button class="btn primary" id="btnStartQuiz">เริ่มทำแบบทดสอบ ▶️</button>
+              <span class="muted" id="quizHint"></span>
+            </div>
+          </div>
+          <div>
+            <div class="kicker">ภาพรวมคลังคำศัพท์</div>
+            <div id="statsBox" class="mt-8"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="quizArea" class="panel card mt-16 hidden" aria-live="polite"></div>
+      <div id="quizResult" class="panel card mt-16 hidden"></div>
+    </section>
+
+    <!-- Add Word -->
+    <section id="add" class="section hidden" role="tabpanel">
+      <form id="addForm" class="panel card">
+        <h2 style="margin:0 0 12px">เพิ่มคำศัพท์ใหม่</h2>
+        <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+          <label>คำศัพท์ (อังกฤษ)
+            <input required id="fWord" type="text" placeholder="e.g., negotiate"/>
+          </label>
+          <label>ความหมาย (ไทย)
+            <input required id="fMeaning" type="text" placeholder="เจรจาต่อรอง"/>
+          </label>
+          <label>ชนิดคำ (POS)
+            <select id="fPOS">
+              <option>n.</option>
+              <option>v.</option>
+              <option>adj.</option>
+              <option>adv.</option>
+              <option>phr.</option>
+            </select>
+          </label>
+          <label>กลุ่มคำศัพท์
+            <input id="fCategory" type="text" placeholder="Business / Travel / HR ..."/>
+          </label>
+        </div>
+        <label class="mt-8" style="display:block">ตัวอย่างประโยค (อังกฤษ)
+          <textarea id="fExample" placeholder="The two companies agreed to negotiate the terms."></textarea>
+        </label>
+        <div class="mt-8 flex">
+          <button class="btn ok" type="submit">บันทึกคำศัพท์</button>
+          <button class="btn outline" type="reset">ล้างค่า</button>
+        </div>
+        <p class="hint mt-8">คำศัพท์ที่เพิ่มจะถูกเก็บไว้ในเบราว์เซอร์ของคุณ (localStorage) และใช้ได้ในทุกโหมด</p>
+      </form>
+    </section>
+
+    <!-- List -->
+    <section id="list" class="section hidden" role="tabpanel">
+      <div class="panel card">
+        <div class="controls">
+          <input id="search" type="text" placeholder="ค้นหา: negotiate / เจรจา / HR ..." />
+          <select id="listCategory"></select>
+          <select id="listPOS"></select>
+          <button class="btn" id="btnResetFilters">รีเซ็ตตัวกรอง</button>
+          <button class="btn ok" id="btnExport">ส่งออก JSON</button>
+        </div>
+        <div class="mt-8 small">คลิกที่รายการเพื่อแก้ไขแบบอินไลน์ • ใช้ปุ่ม 🗑️ เพื่อลบ</div>
+        <table class="table mt-8" id="vocabTable"></table>
+        <div class="mt-8 flex">
+          <button class="btn warn" id="btnResetDefault">คืนค่าเริ่มต้นปี 2568</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Import / Export -->
+    <section id="io" class="section hidden" role="tabpanel">
+      <div class="panel card">
+        <h2 style="margin:0 0 12px">นำเข้า / ส่งออก คลังคำศัพท์</h2>
+        <div class="grid grid-2">
+          <div>
+            <h3 style="margin:0 0 8px">ส่งออก</h3>
+            <p class="muted">บันทึกเป็นไฟล์ .json เพื่อนำไปใช้บนอุปกรณ์อื่น</p>
+            <button class="btn ok" id="btnExport2">⬇️ ดาวน์โหลดไฟล์ JSON</button>
+          </div>
+          <div>
+            <h3 style="margin:0 0 8px">นำเข้า</h3>
+            <input type="file" id="fileInput" accept="application/json" />
+            <p class="small">หรือวาง JSON ลงในช่องด้านล่างแล้วกด "นำเข้า JSON"</p>
+            <textarea id="jsonArea" placeholder='[{"word":"negotiate","meaning":"เจรจาต่อรอง","pos":"v.","category":"Business"}]'></textarea>
+            <div class="mt-8 flex">
+              <button class="btn primary" id="btnImportJSON">นำเข้า JSON</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel card mt-16">
+        <h3 style="margin:0 0 8px">แชร์คลังคำศัพท์ผ่านลิงก์ (ทดลอง)</h3>
+        <p class="small">สร้างลิงก์ที่ฝังข้อมูลคำศัพท์ไว้ใน URL (เหมาะกับชุดคำไม่ใหญ่มาก)</p>
+        <div class="flex">
+          <button class="btn" id="btnShareLink">สร้างลิงก์แชร์</button>
+          <input id="shareLink" type="text" style="flex:1" readonly placeholder="ลิงก์จะแสดงที่นี่"/>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // ===== Utilities =====
+    const $ = (sel, el=document) => el.querySelector(sel);
+    const $$ = (sel, el=document) => Array.from(el.querySelectorAll(sel));
+    const storeKey = 'toeic_vocab_2568_v1';
+
+    function uid(){ return Math.random().toString(36).slice(2,10) }
+    function shuffle(arr){
+      const a = arr.slice();
+      for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]] }
+      return a;
+    }
+    function choice(arr, k){ return shuffle(arr).slice(0,k) }
+    const clamp = (n, min, max)=> Math.min(Math.max(n, min), max);
+
+    // Normalize vocab items (for imported/legacy data)
+    function normalizeVocab(arr){
+      if(!Array.isArray(arr)) return [];
+      return arr.map(x=>({
+        id: x.id || uid(),
+        word: (x.word||'').toString(),
+        meaning: (x.meaning||'').toString(),
+        pos: x.pos || 'อื่นๆ',
+        category: x.category || 'ไม่ระบุ',
+        example: x.example || '',
+        wrong: Number.isFinite(x.wrong)? x.wrong : 0,
+        seen: Number.isFinite(x.seen)? x.seen : 0,
+      }))
+      // filter out invalid entries with missing word/meaning
+      .filter(x=>x.word.trim()!=='' && x.meaning.trim()!=='');
+    }
+
+    // ===== Default dataset (curated for TOEIC) =====
+    const defaultWords = [
+      // Business / Office
+      {word:'negotiate', meaning:'เจรจาต่อรอง', pos:'v.', category:'Business', example:'They negotiated a better price.'},
+      {word:'agreement', meaning:'ข้อตกลง', pos:'n.', category:'Business', example:'The agreement was signed yesterday.'},
+      {word:'deadline', meaning:'กำหนดส่งงาน', pos:'n.', category:'Office', example:'The project deadline is next Monday.'},
+      {word:'proposal', meaning:'ข้อเสนอ', pos:'n.', category:'Business', example:'Please review the proposal.'},
+      {word:'meeting', meaning:'การประชุม', pos:'n.', category:'Office', example:'The meeting starts at 10 a.m.'},
+      {word:'conference', meaning:'การประชุมใหญ่', pos:'n.', category:'Office', example:'He will attend an industry conference.'},
+      {word:'reschedule', meaning:'เลื่อนตารางนัด', pos:'v.', category:'Office', example:'Can we reschedule our appointment?'},
+      {word:'appointment', meaning:'การนัดหมาย', pos:'n.', category:'Office', example:'I have a dentist appointment at 3 p.m.'},
+      {word:'minutes', meaning:'บันทึกการประชุม', pos:'n.', category:'Office', example:'She took the meeting minutes.'},
+      {word:'department', meaning:'แผนก', pos:'n.', category:'Office', example:'Please contact the HR department.'},
+      {word:'branch', meaning:'สาขา (บริษัท/ธนาคาร)', pos:'n.', category:'Business', example:'We opened a new branch in Chiang Mai.'},
+      {word:'headquarters', meaning:'สำนักงานใหญ่', pos:'n.', category:'Business', example:'The headquarters is located in Bangkok.'},
+
+      // HR
+      {word:'candidate', meaning:'ผู้สมัครงาน', pos:'n.', category:'HR', example:'We interviewed three candidates.'},
+      {word:'resume', meaning:'ประวัติย่อ', pos:'n.', category:'HR', example:'Please send your resume and cover letter.'},
+      {word:'qualification', meaning:'คุณสมบัติ', pos:'n.', category:'HR', example:'Experience is a key qualification.'},
+      {word:'promotion', meaning:'การเลื่อนตำแหน่ง', pos:'n.', category:'HR', example:'She received a promotion last month.'},
+      {word:'vacancy', meaning:'ตำแหน่งงานว่าง', pos:'n.', category:'HR', example:'There is a vacancy in accounting.'},
+
+      // Finance & Purchasing
+      {word:'invoice', meaning:'ใบแจ้งหนี้', pos:'n.', category:'Finance', example:'The invoice is due in 30 days.'},
+      {word:'receipt', meaning:'ใบเสร็จรับเงิน', pos:'n.', category:'Finance', example:'Keep the receipt for reimbursement.'},
+      {word:'budget', meaning:'งบประมาณ', pos:'n.', category:'Finance', example:'We must stay within the budget.'},
+      {word:'expense', meaning:'ค่าใช้จ่าย', pos:'n.', category:'Finance', example:'Travel expenses will be reimbursed.'},
+      {word:'quotation', meaning:'ใบเสนอราคา', pos:'n.', category:'Purchasing', example:'We requested three quotations.'},
+      {word:'warehouse', meaning:'คลังสินค้า', pos:'n.', category:'Supply Chain', example:'The goods are stored in the warehouse.'},
+      {word:'shipment', meaning:'การขนส่งสินค้า', pos:'n.', category:'Logistics', example:'The shipment was delayed by a week.'},
+      {word:'inventory', meaning:'สินค้าคงคลัง', pos:'n.', category:'Supply Chain', example:'We will check the inventory levels.'},
+      {word:'supplier', meaning:'ผู้จัดส่ง / ซัพพลายเออร์', pos:'n.', category:'Purchasing', example:'The supplier offered a discount.'},
+      {word:'purchase order', meaning:'ใบสั่งซื้อ (PO)', pos:'n.', category:'Purchasing', example:'Please issue a purchase order.'},
+
+      // Marketing & Sales
+      {word:'advertisement', meaning:'โฆษณา', pos:'n.', category:'Marketing', example:'The advertisement increased sales.'},
+      {word:'promotion (sales)', meaning:'ส่งเสริมการขาย', pos:'n.', category:'Marketing', example:'We launched a summer promotion.'},
+      {word:'brand', meaning:'แบรนด์', pos:'n.', category:'Marketing', example:'Brand awareness is growing.'},
+      {word:'market research', meaning:'การวิจัยตลาด', pos:'n.', category:'Marketing', example:'We conducted market research.'},
+      {word:'target audience', meaning:'กลุ่มเป้าหมาย', pos:'n.', category:'Marketing', example:'Define the target audience first.'},
+      {word:'wholesale', meaning:'ขายส่ง', pos:'n.', category:'Sales', example:'They sell furniture at wholesale prices.'},
+      {word:'retail', meaning:'ค้าปลีก', pos:'n.', category:'Sales', example:'The product will be sold at retail stores.'},
+      {word:'refund', meaning:'คืนเงิน', pos:'n.', category:'Sales', example:'You can request a refund within 7 days.'},
+      {word:'warranty', meaning:'การรับประกัน', pos:'n.', category:'Sales', example:'The warranty lasts for one year.'},
+
+      // Travel & Office Facilities
+      {word:'itinerary', meaning:'กำหนดการเดินทาง', pos:'n.', category:'Travel', example:'Please confirm the travel itinerary.'},
+      {word:'reservation', meaning:'การจอง', pos:'n.', category:'Travel', example:'I made a hotel reservation.'},
+      {word:'amenities', meaning:'สิ่งอำนวยความสะดวก', pos:'n.', category:'Travel', example:'The hotel amenities include a gym.'},
+      {word:'commute', meaning:'การเดินทางไปทำงาน', pos:'n.', category:'Travel', example:'Her daily commute takes one hour.'},
+      {word:'maintenance', meaning:'การบำรุงรักษา', pos:'n.', category:'Facilities', example:'The elevator is under maintenance.'},
+      {word:'renovation', meaning:'การปรับปรุง/รีโนเวท', pos:'n.', category:'Facilities', example:'The office is under renovation.'},
+
+      // Contracts & Legal
+      {word:'contract', meaning:'สัญญา', pos:'n.', category:'Legal', example:'The contract expires next year.'},
+      {word:'regulation', meaning:'ข้อบังคับ/ระเบียบ', pos:'n.', category:'Legal', example:'We must follow safety regulations.'},
+      {word:'requirement', meaning:'ข้อกำหนด', pos:'n.', category:'Legal', example:'Quality is a key requirement.'},
+      {word:'permission', meaning:'การอนุญาต', pos:'n.', category:'Legal', example:'We need written permission.'},
+      {word:'penalty', meaning:'โทษ / ค่าปรับ', pos:'n.', category:'Legal', example:'Late delivery may incur a penalty.'},
+
+      // IT & Operations
+      {word:'install', meaning:'ติดตั้ง', pos:'v.', category:'IT', example:'Please install the latest software.'},
+      {word:'update', meaning:'อัปเดต', pos:'v.', category:'IT', example:'The system will update tonight.'},
+      {word:'access', meaning:'เข้าถึง', pos:'v.', category:'IT', example:'Only managers can access the server.'},
+      {word:'backup', meaning:'สำรองข้อมูล', pos:'n.', category:'IT', example:'Schedule a daily backup.'},
+      {word:'device', meaning:'อุปกรณ์', pos:'n.', category:'IT', example:'The device is not connected.'},
+      {word:'manual', meaning:'คู่มือ', pos:'n.', category:'Operations', example:'Read the user manual first.'},
+      {word:'procedure', meaning:'ขั้นตอน', pos:'n.', category:'Operations', example:'Follow the safety procedure.'},
+      {word:'efficiency', meaning:'ประสิทธิภาพ', pos:'n.', category:'Operations', example:'We improved operational efficiency.'},
+
+      // Manufacturing & Quality
+      {word:'assembly', meaning:'การประกอบชิ้นส่วน', pos:'n.', category:'Manufacturing', example:'The assembly line runs 24/7.'},
+      {word:'inspection', meaning:'การตรวจสอบ', pos:'n.', category:'Quality', example:'All products undergo inspection.'},
+      {word:'defect', meaning:'ข้อบกพร่อง', pos:'n.', category:'Quality', example:'We found a minor defect.'},
+      {word:'specification', meaning:'ข้อกำหนดทางเทคนิค', pos:'n.', category:'Quality', example:'Meet the product specifications.'},
+      {word:'capacity', meaning:'กำลังการผลิต / ความจุ', pos:'n.', category:'Manufacturing', example:'The plant increased capacity.'},
+
+      // Common verbs & adjectives
+      {word:'confirm', meaning:'ยืนยัน', pos:'v.', category:'Common', example:'Please confirm your attendance.'},
+      {word:'postpone', meaning:'เลื่อนออกไป', pos:'v.', category:'Common', example:'They postponed the seminar.'},
+      {word:'approve', meaning:'อนุมัติ', pos:'v.', category:'Common', example:'The manager approved the request.'},
+      {word:'decline', meaning:'ปฏิเสธ / ลดลง', pos:'v.', category:'Common', example:'He declined the invitation.'},
+      {word:'efficient', meaning:'มีประสิทธิภาพ', pos:'adj.', category:'Common', example:'An efficient process saves time.'},
+      {word:'satisfied', meaning:'พึงพอใจ', pos:'adj.', category:'Common', example:'Customers are satisfied with the service.'},
+      {word:'temporary', meaning:'ชั่วคราว', pos:'adj.', category:'Common', example:'This is a temporary solution.'},
+      {word:'available', meaning:'พร้อมใช้งาน / ว่าง', pos:'adj.', category:'Common', example:'The room is available after 2 p.m.'},
+      {word:'increase', meaning:'เพิ่มขึ้น', pos:'v.', category:'Common', example:'We aim to increase revenue.'},
+      {word:'require', meaning:'ต้องการ / จำเป็นต้อง', pos:'v.', category:'Common', example:'This job requires weekend work.'}
+    ].map(d=>({id:uid(), wrong:0, seen:0, ...d}));
+
+    // ===== State =====
+    let VOCAB = [];
+    let currentSet = [];
+
+    function loadVocab(){
+      const raw = localStorage.getItem(storeKey);
+      if(raw){
+        try{ VOCAB = normalizeVocab(JSON.parse(raw)) }catch{ VOCAB = [] }
+      }
+      if(!raw || !Array.isArray(VOCAB) || VOCAB.length===0){
+        VOCAB = normalizeVocab(defaultWords);
+        saveVocab();
+      }
+    }
+    function saveVocab(){ localStorage.setItem(storeKey, JSON.stringify(VOCAB)) }
+
+    function getCategories(){
+      const cats = Array.from(new Set(VOCAB.map(v=>v.category||'ไม่ระบุ'))).sort();
+      return ['ทั้งหมด', ...cats]
+    }
+    function getPOS(){
+      const pos = Array.from(new Set(VOCAB.map(v=>v.pos||'อื่นๆ'))).sort();
+      return ['ทั้งหมด', ...pos]
+    }
+
+    // ===== Tabs =====
+    $$('.tab').forEach(btn=>btn.addEventListener('click',()=>{
+      const name = btn.dataset.tab;
+      $$('.tab').forEach(b=>b.setAttribute('aria-selected', String(b===btn)));
+      $$('.section').forEach(sec=>sec.classList.toggle('hidden', sec.id!==name));
+      if(name==='list') renderTable();
+      if(name==='quiz') renderStats();
+      if(name==='flash') initFlash();
+    }));
+
+    // ===== Populate selects =====
+    function fillSelect(sel, items){ sel.innerHTML = items.map(c=>`<option>${c}</option>`).join('') }
+
+    function refreshFilters(){
+      fillSelect($('#flashCategory'), getCategories());
+      fillSelect($('#quizCategory'), getCategories());
+      fillSelect($('#listCategory'), getCategories());
+      fillSelect($('#flashPOS'), getPOS());
+      fillSelect($('#quizPOS'), getPOS());
+      fillSelect($('#listPOS'), getPOS());
+    }
+
+    // ===== Flashcards =====
+    let flashIndex=0, flashRevealed=false, flashPool=[];
+    function buildPool(catSel, posSel){
+      return VOCAB.filter(v=> (catSel==='ทั้งหมด'||(v.category||'ไม่ระบุ')===catSel) && (posSel==='ทั้งหมด'||(v.pos||'อื่นๆ')===posSel) );
+    }
+
+    function setFlashMessage(msg){
+      $('#flashInner').innerHTML = `<div class="muted">${msg}</div>`;
+      $('#flashProgress').style.width = '0%';
+      $('#flashDone').textContent = '0';
+      updateFlashControls();
+    }
+
+    function updateFlashControls(){
+      const disabled = flashPool.length===0;
+      ['btnKnow','btnUnsure','btnPrev','btnNext','btnShuffle','btnWrongOnly'].forEach(id=>{
+        const el = document.getElementById(id); if(el) el.disabled = disabled;
+      });
+    }
+
+    function initFlash(){
+      flashPool = buildPool($('#flashCategory').value, $('#flashPOS').value);
+      if(flashPool.length===0){ setFlashMessage('ยังไม่มีคำศัพท์ในตัวกรองนี้'); return }
+      flashIndex=0; flashRevealed=false; renderFlash();
+    }
+
+    function renderFlash(){
+      if(!Array.isArray(flashPool) || flashPool.length===0){ setFlashMessage('ยังไม่มีคำศัพท์ให้ทบทวน'); return }
+      flashIndex = clamp(flashIndex, 0, flashPool.length-1);
+      const item = flashPool[flashIndex];
+      if(!item){ setFlashMessage('ไม่พบรายการการ์ด'); return }
+      const frontIsWord = $('#flashMode').value==='front';
+      const front = frontIsWord ? `<div class="word">${item.word}</div>` : `<div class="meaning">${item.meaning}</div>`;
+      const back = frontIsWord ? `<div><div class="meaning">${item.meaning}</div><div class="muted">${item.pos} • ${item.category||'ไม่ระบุ'}</div><div class="small">ตัวอย่าง: ${item.example||'-'}</div></div>`
+                               : `<div><div class="word">${item.word}</div><div class="muted">${item.pos} • ${item.category||'ไม่ระบุ'}</div><div class="small">ตัวอย่าง: ${item.example||'-'}</div></div>`;
+      $('#flashInner').innerHTML = flashRevealed ? back : front;
+      $('#flashProgress').style.width = `${((flashIndex+1)/flashPool.length)*100}%`;
+      const done = flashPool.reduce((a,b)=>a+(b.seen>0 && b.wrong===0?1:0),0);
+      $('#flashDone').textContent = `${done}`;
+      updateFlashControls();
+    }
+
+    $('#flashCard').addEventListener('click',()=>{ flashRevealed=!flashRevealed; renderFlash() })
+    document.addEventListener('keydown', (e)=>{
+      if($('#flash').classList.contains('hidden')) return;
+      if(e.code==='Space'){ e.preventDefault(); flashRevealed=!flashRevealed; renderFlash() }
+      if(e.key==='ArrowRight'){ nextFlash() }
+      if(e.key==='ArrowLeft'){ prevFlash() }
+      if(e.key==='1'){ markKnow() }
+      if(e.key==='2'){ markUnsure() }
+    })
+    function nextFlash(){ if(flashPool.length===0) return setFlashMessage('ยังไม่มีคำศัพท์ให้ทบทวน'); flashIndex=(flashIndex+1)%flashPool.length; flashRevealed=false; renderFlash() }
+    function prevFlash(){ if(flashPool.length===0) return setFlashMessage('ยังไม่มีคำศัพท์ให้ทบทวน'); flashIndex=(flashIndex-1+flashPool.length)%flashPool.length; flashRevealed=false; renderFlash() }
+    function markKnow(){ if(flashPool.length===0) return; const it = flashPool[flashIndex]; if(!it) return; it.seen++; saveVocab(); nextFlash() }
+    function markUnsure(){ if(flashPool.length===0) return; const it = flashPool[flashIndex]; if(!it) return; it.seen++; it.wrong++; saveVocab(); nextFlash() }
+    $('#btnNext').onclick = nextFlash; $('#btnPrev').onclick = prevFlash; $('#btnKnow').onclick = markKnow; $('#btnUnsure').onclick = markUnsure;
+    $('#btnShuffle').onclick = ()=>{ if(flashPool.length===0) return; flashPool = shuffle(flashPool); flashIndex=0; renderFlash() }
+    $('#btnWrongOnly').onclick = ()=>{ const filtered = flashPool.filter(x=>x.wrong>0); if(filtered.length===0){ alert('ยังไม่มีการ์ดที่ผิดบ่อย'); return } flashPool = filtered; flashIndex=0; renderFlash() }
+    $('#flashCategory').onchange = initFlash; $('#flashPOS').onchange = initFlash; $('#flashMode').onchange = renderFlash;
+
+    // ===== Quiz =====
+    let quizState=null;
+    function renderStats(){
+      const total = VOCAB.length;
+      const seen = VOCAB.filter(v=>v.seen>0).length;
+      const tough = VOCAB.filter(v=>v.wrong>0).length;
+      $('#statsBox').innerHTML = `<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px">
+        <div class="card"><div class="kicker">คำศัพท์ทั้งหมด</div><div class="score">${total}</div></div>
+        <div class="card"><div class="kicker">เคยทบทวนแล้ว</div><div class="score">${seen}</div></div>
+        <div class="card"><div class="kicker">โจทย์ที่ยาก</div><div class="score">${tough}</div></div>
+      </div>`;
+    }
+
+    function startQuiz(){
+      const mode = $('#quizMode').value;
+      const count = Math.min(Math.max(parseInt($('#quizCount').value||10),3),100);
+      const pool = buildPool($('#quizCategory').value, $('#quizPOS').value);
+      if(pool.length<4){ alert('ต้องมีคำศัพท์อย่างน้อย 4 คำในชุดนี้เพื่อเริ่มทำแบบทดสอบ'); return }
+      const qs = choice(pool, Math.min(count, pool.length));
+      quizState = {mode, i:0, correct:0, total:qs.length, answers:[], items:qs};
+      $('#quizArea').classList.remove('hidden');
+      $('#quizResult').classList.add('hidden');
+      renderQuestion();
+    }
+
+    function makeOptions(correctItem, pool){
+      const wrongs = shuffle(pool.filter(x=>x.id!==correctItem.id)).slice(0,3);
+      const opts = shuffle([correctItem, ...wrongs]).map(it=>({id:it.id, label:it.meaning, correct:it.id===correctItem.id}));
+      return opts;
+    }
+
+    function renderQuestion(){
+      if(!quizState || !Array.isArray(quizState.items) || quizState.i>=quizState.total){ return finishQuiz() }
+      const q = quizState.items[quizState.i];
+      if(!q){ return finishQuiz() }
+      const prog = Math.round(((quizState.i)/quizState.total)*100);
+      let html = `<div class="kicker">ข้อ ${quizState.i+1} / ${quizState.total}</div><div class="progress" style="margin:8px 0 16px"><span style="width:${prog}%"></span></div>`;
+      if(quizState.mode==='mc'){
+        html += `<div class="word" style="margin:6px 0 16px">${q.word}</div>`;
+        const opts = makeOptions(q, quizState.items);
+        html += `<div class="grid" style="grid-template-columns:1fr;gap:10px">` + opts.map((o,idx)=>
+          `<button class="btn" data-choice="${o.id}" style="justify-content:flex-start">${String.fromCharCode(65+idx)}. ${o.label}</button>`
+        ).join('') + `</div>`;
+        html += `<div class="small mt-8">ชนิดคำ: ${q.pos} • กลุ่ม: ${q.category||'ไม่ระบุ'}</div>`;
+      } else {
+        html += `<div class="meaning" style="margin:6px 0 6px">${q.meaning}</div>`;
+        html += `<input id="answer" type="text" placeholder="พิมพ์คำศัพท์ภาษาอังกฤษ" style="width:100%;margin-top:8px" />`;
+        html += `<div class="mt-8 flex"><button class="btn ok" id="btnCheck">ตรวจคำตอบ</button><button class="btn outline" id="btnSkip">ข้าม</button></div>`;
+      }
+      $('#quizArea').innerHTML = html;
+
+      if(quizState.mode==='mc'){
+        $$('#quizArea .btn').forEach(b=>b.addEventListener('click',()=>{
+          const picked = b.getAttribute('data-choice');
+          const correct = picked===q.id;
+          if(correct) quizState.correct++; else { q.wrong++; saveVocab(); }
+          quizState.answers.push({q:q.word, meaning:q.meaning, correct, your:b.textContent.replace(/^[A-D]\.\s*/,''), expected:q.meaning});
+          nextQuestion();
+        }))
+      } else {
+        $('#answer').focus();
+        $('#btnCheck').onclick = ()=>{
+          const val = ($('#answer').value||'').trim().toLowerCase();
+          const ok = val===q.word.toLowerCase();
+          if(ok) quizState.correct++; else { q.wrong++; saveVocab(); }
+          quizState.answers.push({q:q.meaning, correct:ok, your:val||'(blank)', expected:q.word});
+          nextQuestion();
+        }
+        $('#btnSkip').onclick = ()=>{ quizState.answers.push({q:q.meaning, correct:false, your:'(skipped)', expected:q.word}); q.wrong++; saveVocab(); nextQuestion(); }
+      }
+    }
+
+    function nextQuestion(){
+      if(!quizState) return;
+      quizState.i++;
+      if(quizState.i>=quizState.total){
+        finishQuiz();
+      } else {
+        renderQuestion();
+      }
+    }
+
+    function finishQuiz(){
+      if(!quizState) return;
+      $('#quizArea').classList.add('hidden');
+      const pct = quizState.total? Math.round((quizState.correct/quizState.total)*100) : 0;
+      $('#quizResult').classList.remove('hidden');
+      $('#quizResult').innerHTML = `<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+        <div class="card"><div class="kicker">คะแนนรวม</div><div class="score">${quizState.correct} / ${quizState.total} (${pct}%)</div></div>
+        <div class="card"><div class="kicker">แนะนำ</div><div>${pct>=80? 'เยี่ยมมาก! ต่อด้วยชุดถัดไป ✅' : pct>=60 ? 'ดีแล้ว ลองทบทวนโจทย์ที่ผิด 🔁' : 'กลับไปทบทวน Flashcards ก่อน 📚'}</div></div>
+      </div>
+      <div class="mt-16">
+        <h3 style="margin:0 0 8px">สรุปคำตอบ</h3>
+        <table class="table">
+          <thead><tr><th>โจทย์</th><th>คำตอบของคุณ</th><th>คำตอบที่ถูก</th><th>สถานะ</th></tr></thead>
+          <tbody>
+            ${(quizState.answers||[]).map(a=>`<tr>
+              <td>${a.q}</td>
+              <td>${a.your}</td>
+              <td>${a.expected}</td>
+              <td>${a.correct? '✔️' : '<span class="danger-text">✖️</span>'}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+        <div class="mt-8 flex">
+          <button class="btn" id="btnRetryWrong">ฝึกเฉพาะข้อที่ผิด</button>
+          <button class="btn primary" id="btnAgain">ทำใหม่อีกครั้ง</button>
+        </div>
+      </div>`;
+
+      $('#btnAgain').onclick = startQuiz;
+      $('#btnRetryWrong').onclick = ()=>{
+        const wrongItems = (quizState.answers||[]).reduce((acc,ans,idx)=>{
+          if(!ans.correct) acc.push(quizState.items[idx]);
+          return acc;
+        },[]).filter(Boolean);
+        if(wrongItems.length<1){ alert('ไม่มีข้อที่ผิด'); return }
+        quizState = {mode:quizState.mode, i:0, correct:0, total:wrongItems.length, answers:[], items:wrongItems};
+        $('#quizResult').classList.add('hidden');
+        $('#quizArea').classList.remove('hidden');
+        renderQuestion();
+      }
+    }
+
+    $('#btnStartQuiz').onclick = startQuiz;
+
+    // ===== Add Word =====
+    $('#addForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const word = $('#fWord').value.trim();
+      const meaning = $('#fMeaning').value.trim();
+      if(!word||!meaning){ alert('กรอกคำศัพท์และความหมายด้วยครับ'); return }
+      const item = {
+        id:uid(), word, meaning,
+        pos: $('#fPOS').value || 'อื่นๆ',
+        category: $('#fCategory').value || 'Custom',
+        example: $('#fExample').value || '' ,
+        wrong:0, seen:0
+      }
+      VOCAB.push(item); saveVocab();
+      refreshFilters(); initFlash(); renderTable();
+      e.target.reset();
+      alert('บันทึกแล้ว! เพิ่มคำศัพท์สำเร็จ');
+    })
+
+    // ===== Table/List =====
+    function renderTable(){
+      const q = ($('#search').value||'').toLowerCase();
+      const cat = $('#listCategory').value||'ทั้งหมด';
+      const pos = $('#listPOS').value||'ทั้งหมด';
+      const rows = VOCAB.filter(v=>
+        (cat==='ทั้งหมด'||(v.category||'ไม่ระบุ')===cat) &&
+        (pos==='ทั้งหมด'||(v.pos||'อื่นๆ')===pos) &&
+        (v.word.toLowerCase().includes(q) || v.meaning.toLowerCase().includes(q) || (v.category||'').toLowerCase().includes(q))
+      );
+      const head = `<tr><th>คำศัพท์</th><th>ความหมาย</th><th>POS</th><th>กลุ่ม</th><th>ผิด/ทบทวน</th><th></th></tr>`;
+      const body = rows.map(r=>`<tr data-id="${r.id}">
+        <td contenteditable="true" data-field="word">${r.word}</td>
+        <td contenteditable="true" data-field="meaning">${r.meaning}</td>
+        <td contenteditable="true" data-field="pos">${r.pos}</td>
+        <td contenteditable="true" data-field="category">${r.category||''}</td>
+        <td>${r.wrong} / ${r.seen}</td>
+        <td><button class="btn danger" data-del>🗑️</button></td>
+      </tr>`).join('');
+      $('#vocabTable').innerHTML = head + body;
+
+      // inline edit
+      $$('#vocabTable [contenteditable]')
+        .forEach(cell=>cell.addEventListener('blur',()=>{
+          const id = cell.closest('tr').dataset.id;
+          const field = cell.dataset.field; const val = cell.textContent.trim();
+          const it = VOCAB.find(x=>x.id===id); if(!it) return; it[field]=val; saveVocab(); refreshFilters();
+        }));
+      // delete
+      $$('#vocabTable [data-del]').forEach(btn=>btn.addEventListener('click',()=>{
+        const id = btn.closest('tr').dataset.id;
+        if(confirm('ลบคำนี้หรือไม่?')){
+          const idx = VOCAB.findIndex(x=>x.id===id); if(idx>-1) VOCAB.splice(idx,1);
+          saveVocab(); renderTable(); refreshFilters(); initFlash();
+        }
+      }));
+    }
+    $('#search').oninput = renderTable;
+    $('#listCategory').onchange = renderTable; $('#listPOS').onchange = renderTable;
+    $('#btnResetFilters').onclick = ()=>{ $('#search').value=''; $('#listCategory').selectedIndex=0; $('#listPOS').selectedIndex=0; renderTable() }
+
+    // ===== Export / Import =====
+    function downloadJSON(){
+      const data = JSON.stringify(VOCAB, null, 2);
+      const blob = new Blob([data], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'toeic_vocab_2568.json'; a.click();
+      URL.revokeObjectURL(url);
+    }
+    $('#btnExport').onclick = downloadJSON; $('#btnExport2').onclick = downloadJSON;
+
+    $('#fileInput').addEventListener('change', (e)=>{
+      const file = e.target.files[0]; if(!file) return;
+      const reader = new FileReader();
+      reader.onload = ()=>{ try{ const data = JSON.parse(reader.result); if(Array.isArray(data)){ VOCAB = normalizeVocab(data); saveVocab(); refreshFilters(); initFlash(); renderTable(); alert('นำเข้าสำเร็จ!') } else alert('รูปแบบไฟล์ไม่ถูกต้อง') } catch{ alert('ไม่สามารถอ่านไฟล์ JSON นี้ได้') } };
+      reader.readAsText(file);
+    })
+    $('#btnImportJSON').onclick = ()=>{
+      let txt = $('#jsonArea').value.trim(); if(!txt) return alert('วาง JSON ก่อนครับ');
+      try{ const data = JSON.parse(txt); if(Array.isArray(data)){ VOCAB = normalizeVocab(data); saveVocab(); refreshFilters(); initFlash(); renderTable(); alert('นำเข้าสำเร็จ!') } else alert('ต้องเป็นอาร์เรย์ของคำศัพท์') }catch{ alert('JSON ไม่ถูกต้อง') }
+    }
+
+    // Share via URL (experimental)
+    $('#btnShareLink').onclick = ()=>{
+      try{
+        const payload = encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(VOCAB).slice(0,40000))))); // limit size
+        const link = location.href.split('#')[0] + '#vocab=' + payload;
+        $('#shareLink').value = link; $('#shareLink').select(); document.execCommand('copy');
+        alert('สร้างลิงก์และคัดลอกแล้ว (ทดลอง)');
+      }catch{ alert('ไม่สามารถสร้างลิงก์ได้ ชุดคำศัพท์อาจใหญ่เกินไป') }
+    }
+
+    // Load from URL hash if present
+    function importFromHash(){
+      const m = location.hash.match(/#vocab=([^&]+)/);
+      if(!m) return;
+      try{
+        const txt = decodeURIComponent(escape(atob(decodeURIComponent(m[1]))));
+        const data = JSON.parse(txt);
+        if(Array.isArray(data)&&data.length){ VOCAB = normalizeVocab(data); saveVocab(); }
+      }catch{}
+    }
+
+    // Reset default
+    $('#btnResetDefault').onclick = ()=>{
+      if(confirm('คืนค่าคลังคำศัพท์เริ่มต้นปี 2568? คำที่เพิ่มเองจะหายไป')){
+        VOCAB = normalizeVocab(defaultWords.map(x=>({...x, id:uid(), wrong:0, seen:0})));
+        saveVocab(); refreshFilters(); initFlash(); renderTable();
+      }
+    }
+
+    // ===== Init =====
+    importFromHash();
+    loadVocab();
+    refreshFilters();
+    initFlash();
+    renderStats();
+
+    // ===== Developer Smoke Tests (non-intrusive) =====
+    (function runTests(){
+      try{
+        console.group('%cTOEIC Trainer – Smoke Tests','color:#22c55e');
+        // Test 1: renderFlash on empty pool should not throw
+        const backupPool = flashPool.slice(); const backupIndex = flashIndex; const backupRevealed = flashRevealed;
+        flashPool = []; flashIndex = 0; flashRevealed=false; renderFlash(); console.assert(true,'renderFlash handles empty pool');
+        // restore
+        flashPool = backupPool; flashIndex = backupIndex; flashRevealed = backupRevealed; renderFlash();
+
+        // Test 2: next/prev safe on empty
+        flashPool = []; nextFlash(); prevFlash();
+        // restore again
+        flashPool = backupPool; renderFlash();
+
+        // Test 3: Import normalization
+        const raw = [{word:'x', meaning:'y'}];
+        const norm = normalizeVocab(raw); console.assert(norm[0].id && norm[0].word==='x','normalize ok');
+
+        console.groupEnd();
+      }catch(err){ console.error('Smoke test failed', err); }
+    })();
+  </script>
+</body>
+</html>
